@@ -6,9 +6,12 @@ public class cat : MonoBehaviour
 {
 
     public CharacterController controller;
+	
+	public int speed = 3;
 
     private float verticalSpeed = 0f;
     private float horizontalSpeed = 0f;
+	private float mouseMovement = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +26,12 @@ public class cat : MonoBehaviour
         horizontalSpeed = Input.GetAxis("Horizontal");
 
         Vector3 direction = new(horizontalSpeed, -1, verticalSpeed);
+		
+		// Kääntyminen hiirellä
+		mouseMovement += Input.GetAxis("Mouse X");
+		transform.localRotation = Quaternion.Euler(0, mouseMovement, 0);
+		direction = transform.rotation * direction;
 
-        controller.Move(direction * Time.deltaTime);
+        controller.Move(direction * Time.deltaTime * speed);
     }
 }
